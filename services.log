@@ -1,0 +1,4 @@
+ID             NAME              MODE         REPLICAS   IMAGE                          PORTS
+1iux618mplje   fitlog_backend    replicated   2/2        bednek/fitlog-backend:1.0.0    
+iosoraa9yh3n   fitlog_db         replicated   1/1        postgres:16.4-alpine           
+orrkfsgq05s7   fitlog_frontend   replicated   2/2        bednek/fitlog-frontend:1.0.0   *:8080->80/tcp
