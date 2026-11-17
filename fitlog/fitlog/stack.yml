@@ -1,0 +1,110 @@
+# Edzésnapló – Docker Swarm stack
+# Előfeltételek (részletek: README.md):
+#   export REGISTRY=docker.io/FELHASZNALONEV   (vagy ghcr.io/felhasznalonev)
+#   export TAG=1.0.0
+#   docker secret create fitlog_db_password -   (lásd README)
+# Telepítés: docker stack deploy -c stack.yml --with-registry-auth fitlog
+version: "3.8"
+
+services:
+  frontend:                      # nginx: statikus UI + /api/ reverse proxy (egyetlen publikált port)
+    image: ${REGISTRY:-docker.io/FELHASZNALONEV}/fitlog-frontend:${TAG:-1.0.0}
+    ports:
+      - "8080:80"
+    networks:
+      - fitlog-net
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/healthz"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 5s
+        order: start-first
+        failure_action: rollback
+      restart_policy:
+        condition: any
+        delay: 5s
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 64M
+
+  backend:                       # Flask REST API: üzleti logika, nincs publikált port
+    image: ${REGISTRY:-docker.io/FELHASZNALONEV}/fitlog-backend:${TAG:-1.0.0}
+    environment:
+      DB_HOST: db
+      DB_NAME: fitlog
+      DB_USER: fitlog
+      DB_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_password
+    networks:
+      - fitlog-net
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://127.0.0.1:5000/api/health', timeout=2)"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 20s
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 5s
+        order: start-first
+        failure_action: rollback
+      restart_policy:
+        condition: any
+        delay: 5s
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 256M
+
+  db:                            # PostgreSQL: tartós adattárolás named volume-on
+    image: postgres:16.4-alpine
+    environment:
+      POSTGRES_DB: fitlog
+      POSTGRES_USER: fitlog
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - fitlog-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fitlog -d fitlog"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager   # a volume ehhez a node-hoz kötődik (több node esetén: node label)
+      restart_policy:
+        condition: any
+        delay: 5s
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 512M
+
+networks:
+  fitlog-net:
+    driver: overlay
+
+volumes:
+  db_data:
+
+secrets:
+  db_password:
+    external: true
+    name: fitlog_db_password

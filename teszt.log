@@ -1,0 +1,174 @@
+
+=== 1. Funkcionális teszt: adat rögzítése és visszaolvasása ===
+{"id":3}
+
+OK: a bejegyzés (teszt-1794909099) visszaolvasható
+
+=== 2. Skálázás: backend 2 -> 3 replika ===
+fitlog_backend scaled to 3
+overall progress: 0 out of 3 tasks
+1/3:  
+2/3:  
+3/3:  
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 2 out of 3 tasks
+overall progress: 3 out of 3 tasks
+verify: Waiting 6 seconds to verify that tasks are stable...
+verify: Waiting 5 seconds to verify that tasks are stable...
+verify: Waiting 5 seconds to verify that tasks are stable...
+verify: Waiting 5 seconds to verify that tasks are stable...
+verify: Waiting 5 seconds to verify that tasks are stable...
+verify: Waiting 4 seconds to verify that tasks are stable...
+verify: Waiting 4 seconds to verify that tasks are stable...
+verify: Waiting 4 seconds to verify that tasks are stable...
+verify: Waiting 4 seconds to verify that tasks are stable...
+verify: Waiting 4 seconds to verify that tasks are stable...
+verify: Waiting 3 seconds to verify that tasks are stable...
+verify: Waiting 3 seconds to verify that tasks are stable...
+verify: Waiting 3 seconds to verify that tasks are stable...
+verify: Waiting 3 seconds to verify that tasks are stable...
+verify: Waiting 2 seconds to verify that tasks are stable...
+verify: Waiting 2 seconds to verify that tasks are stable...
+verify: Waiting 2 seconds to verify that tasks are stable...
+verify: Waiting 2 seconds to verify that tasks are stable...
+verify: Waiting 2 seconds to verify that tasks are stable...
+verify: Waiting 1 seconds to verify that tasks are stable...
+verify: Waiting 1 seconds to verify that tasks are stable...
+verify: Waiting 1 seconds to verify that tasks are stable...
+verify: Waiting 1 seconds to verify that tasks are stable...
+verify: Service fitlog_backend converged
+ID             NAME             MODE         REPLICAS   IMAGE                         PORTS
+1iux618mplje   fitlog_backend   replicated   3/3        bednek/fitlog-backend:1.0.0   
+ID             NAME               IMAGE                         NODE             DESIRED STATE   CURRENT STATE            ERROR     PORTS
+jyci4wrkug6a   fitlog_backend.1   bednek/fitlog-backend:1.0.0   docker-desktop   Running         Running 33 minutes ago             
+2lzckuwd2ax9   fitlog_backend.2   bednek/fitlog-backend:1.0.0   docker-desktop   Running         Running 33 minutes ago             
+natw822af7om   fitlog_backend.3   bednek/fitlog-backend:1.0.0   docker-desktop   Running         Running 6 seconds ago              
+Terheléselosztás (12 kérés, kiszolgáló task azonosítók):
+      4 "host":"1da5b816b040"
+      4 "host":"607f18f21d95"
+      4 "host":"968995a71425"
+
+=== 3. Hibatűrés: egy backend konténer leállítása ===
+Leállított konténer: 968995a71425
+NAME                   CURRENT STATE            ERROR
+fitlog_backend.1       Running 34 minutes ago   
+fitlog_backend.2       Running 34 minutes ago   
+fitlog_backend.3       Running 1 second ago     
+ \_ fitlog_backend.3   Failed 13 seconds ago    "task: non-zero exit (137)"
+ \_ fitlog_backend.3   Failed 29 minutes ago    "task: non-zero exit (137)"
+{"db":true,"host":"f203f52d9b6a"}
+
+
+=== 4. Perzisztencia: az adatbázis-konténer újralétrehozása ===
+Régi db konténer: db3c00fab05b
+Új db konténer: 7141de66c763
+OK: az adatok megmaradtak (teszt-1794909099)
+
+=== Visszaállítás: backend 3 -> 2 replika ===
+fitlog_backend scaled to 2
+overall progress: 0 out of 2 tasks
+1/2:  
+2/2:  
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 6 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 5 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 5 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 5 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 5 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 4 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 4 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 4 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 4 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 4 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 3 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 3 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 3 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 3 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 2 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 2 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 2 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 2 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 2 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 1 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 1 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 1 seconds to verify that tasks are stable...
+1/2: task: non-zero exit (137)
+overall progress: 2 out of 2 tasks
+verify: Waiting 1 seconds to verify that tasks are stable...
+verify: Service fitlog_backend converged
+ID             NAME              MODE         REPLICAS   IMAGE                          PORTS
+1iux618mplje   fitlog_backend    replicated   2/2        bednek/fitlog-backend:1.0.0    
+iosoraa9yh3n   fitlog_db         replicated   1/1        postgres:16.4-alpine           
+orrkfsgq05s7   fitlog_frontend   replicated   2/2        bednek/fitlog-frontend:1.0.0   *:8080->80/tcp
